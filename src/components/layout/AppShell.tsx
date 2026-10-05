@@ -36,6 +36,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
   const [searchValue, setSearchValue] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
   const [shortcutLabel, setShortcutLabel] = useState("Ctrl K");
+  const [themeMounted, setThemeMounted] = useState(false);
   const notificationRef = useRef<HTMLDivElement>(null);
   const accountRef = useRef<HTMLDivElement>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -51,6 +52,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     });
   }, [router]);
   useEffect(() => {
+    const themeFrame = requestAnimationFrame(() => setThemeMounted(true));
     const onKeyDown = (event: KeyboardEvent) => {
       if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
         event.preventDefault();
@@ -63,6 +65,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
     });
     return () => {
       cancelAnimationFrame(frame);
+      cancelAnimationFrame(themeFrame);
       window.removeEventListener("keydown", onKeyDown);
     };
   }, []);
@@ -238,7 +241,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
           </div>
           <div className="ml-auto flex items-center gap-2 md:ml-0 md:justify-self-end">
             <button title="Switch theme" onClick={() => setTheme(theme === "dark" ? "light" : "dark")} className="grid h-10 w-10 place-items-center rounded-lg text-[var(--muted)] active:scale-95 hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]" aria-label="Switch theme">
-              {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+              {themeMounted && theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
             </button>
             <div ref={notificationRef} className="relative hidden md:block">
             <button title="Notifications" onClick={() => setNotificationsOpen((value) => !value)} className="relative grid h-10 w-10 place-items-center rounded-lg text-[var(--muted)] active:scale-95 hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]" aria-label="Notifications" aria-expanded={notificationsOpen}>

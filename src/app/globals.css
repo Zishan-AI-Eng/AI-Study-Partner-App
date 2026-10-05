@@ -71,8 +71,10 @@ html, body { overflow-x: hidden; }
 html { -webkit-tap-highlight-color: transparent; }
 button, a, [role="button"] { touch-action: manipulation; }
 @media (max-width: 767px) {
-  body { overscroll-behavior-y: none; }
-  .app-bg { overscroll-behavior-y: none; }
+  html, body { min-height: 100%; overflow-x: hidden; overflow-y: auto; }
+  body { overscroll-behavior-y: none; touch-action: pan-y; }
+  .app-bg { min-height: 100dvh; overflow-x: hidden; overflow-y: visible; overscroll-behavior-y: none; touch-action: pan-y; -webkit-overflow-scrolling: touch; }
+  .app-bg main { min-height: 0; }
   .app-bg main { padding-bottom: calc(5.5rem + env(safe-area-inset-bottom)); }
   .app-bg main:has(.quiz-mobile-screen) { padding-bottom: 1rem; }
   .interactive { transition: transform .12s ease, background-color .12s ease; }

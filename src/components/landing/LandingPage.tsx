@@ -17,8 +17,10 @@ const softTile = "grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[var(--
 
 function ThemeButton() {
   const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { const frame = window.requestAnimationFrame(() => setMounted(true)); return () => window.cancelAnimationFrame(frame); }, []);
   const dark = resolvedTheme === "dark";
-  return <button type="button" aria-label="Switch theme" title="Switch theme" onClick={() => setTheme(dark ? "light" : "dark")} className="grid h-11 w-11 place-items-center rounded-xl text-[var(--muted)] transition hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]">{dark ? <Sun size={18} /> : <Moon size={18} />}</button>;
+  return <button type="button" aria-label="Switch theme" title="Switch theme" onClick={() => setTheme(dark ? "light" : "dark")} className="grid h-11 w-11 place-items-center rounded-xl text-[var(--muted)] transition hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)]">{mounted && dark ? <Sun size={18} /> : <Moon size={18} />}</button>;
 }
 
 function AuthCta({ compact = false, inverted = false }: { compact?: boolean; inverted?: boolean }) {

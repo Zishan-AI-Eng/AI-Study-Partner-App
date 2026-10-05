@@ -2,6 +2,7 @@
 
 import { BarChart3, FileText, Moon, Sparkles, Sun, type LucideIcon } from "lucide-react";
 import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import AuthMobileShell from "./AuthMobileShell";
 import Logo from "@/components/brand/Logo";
 
@@ -13,10 +14,12 @@ const features: Array<[LucideIcon, string, string]> = [
 
 export default function AuthShell({ children }: { children: React.ReactNode }) {
   const { resolvedTheme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { const frame = window.requestAnimationFrame(() => setMounted(true)); return () => window.cancelAnimationFrame(frame); }, []);
   return <div className="auth-page-shell min-h-[100dvh] bg-[var(--background)] p-0 sm:p-4 lg:h-dvh lg:overflow-hidden lg:p-0">
     <div className="auth-frame relative mx-auto grid min-h-[100dvh] max-w-[1440px] overflow-hidden rounded-none bg-[var(--surface)] shadow-[0_24px_80px_rgba(12,59,46,0.12)] sm:rounded-2xl lg:h-full lg:min-h-0 lg:max-w-none lg:rounded-none lg:grid-cols-[1.02fr_0.98fr]">
       <button type="button" title="Switch theme" onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")} className="absolute right-4 top-4 z-20 grid h-10 w-10 place-items-center rounded-lg border border-transparent text-[var(--muted)] hover:border-[var(--border)] hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] lg:right-6 lg:top-6" aria-label="Switch theme">
-        {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+        {mounted && resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
       </button>
       <section className="relative hidden overflow-hidden border-r border-[var(--border)] bg-[var(--active-nav)] p-10 text-[var(--foreground)] lg:flex lg:h-full lg:min-h-0 lg:flex-col lg:justify-between lg:p-[clamp(1.75rem,5vh,4rem)]">
         <div className="flex h-full w-full max-w-[520px] flex-col">
