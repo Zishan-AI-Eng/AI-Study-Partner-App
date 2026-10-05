@@ -1,6 +1,7 @@
 "use client";
 
-import { BarChart3, FileText, Moon, Sparkles, Sun, type LucideIcon } from "lucide-react";
+import { ArrowLeft, BarChart3, FileText, Moon, Sparkles, Sun, type LucideIcon } from "lucide-react";
+import Link from "next/link";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
 import AuthMobileShell from "./AuthMobileShell";
@@ -12,7 +13,7 @@ const features: Array<[LucideIcon, string, string]> = [
   [BarChart3, "Progress tracking", "Track scores and your study streak over time."],
 ];
 
-export default function AuthShell({ children }: { children: React.ReactNode }) {
+export default function AuthShell({ children, showBackButton = false }: { children: React.ReactNode; showBackButton?: boolean }) {
   const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
   useEffect(() => { const frame = window.requestAnimationFrame(() => setMounted(true)); return () => window.cancelAnimationFrame(frame); }, []);
@@ -21,6 +22,11 @@ export default function AuthShell({ children }: { children: React.ReactNode }) {
       <button type="button" title="Switch theme" onClick={() => setTheme(resolvedTheme === "dark" ? "light" : "dark")} className="absolute right-4 top-4 z-20 grid h-10 w-10 place-items-center rounded-lg border border-transparent text-[var(--muted)] hover:border-[var(--border)] hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] lg:right-6 lg:top-6" aria-label="Switch theme">
         {mounted && resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
       </button>
+      {showBackButton && (
+        <Link href="/login" title="Back to login" aria-label="Back to login" className="absolute left-4 top-4 z-20 grid h-10 w-10 place-items-center rounded-lg border border-transparent text-[var(--muted)] hover:border-[var(--border)] hover:bg-[var(--surface-muted)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] lg:left-6 lg:top-6">
+          <ArrowLeft size={18} />
+        </Link>
+      )}
       <section className="relative hidden overflow-hidden border-r border-[var(--border)] bg-[var(--active-nav)] p-10 text-[var(--foreground)] lg:flex lg:h-full lg:min-h-0 lg:flex-col lg:justify-between lg:p-[clamp(1.75rem,5vh,4rem)]">
         <div className="flex h-full w-full max-w-[520px] flex-col">
           <Logo />
@@ -40,7 +46,7 @@ export default function AuthShell({ children }: { children: React.ReactNode }) {
           <p className="mt-auto pt-4 text-sm text-[var(--muted)]">AI study companion for students.</p>
         </div>
       </section>
-      <section className="relative flex min-h-[100dvh] items-start justify-center overflow-y-auto bg-[var(--surface)] px-6 py-8 sm:items-center sm:px-12 sm:py-12 lg:h-full lg:min-h-0 lg:items-center lg:overflow-hidden lg:px-[clamp(2rem,6vw,6rem)] lg:py-0">
+      <section className="relative flex min-h-[100dvh] items-start justify-center overflow-y-auto bg-[var(--surface)] px-5 py-7 sm:items-center sm:px-12 sm:py-12 lg:h-full lg:min-h-0 lg:items-center lg:overflow-hidden lg:px-[clamp(2rem,6vw,6rem)] lg:py-0">
         <div className="w-full max-w-[420px]">
           <div className="lg:hidden">
             <AuthMobileShell>{children}</AuthMobileShell>
