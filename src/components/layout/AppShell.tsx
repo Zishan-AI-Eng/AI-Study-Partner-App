@@ -162,7 +162,10 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
         className="fixed inset-y-0 left-0 z-40 hidden w-[72px] overflow-visible border-r border-[var(--border)] bg-[var(--sidebar)] p-4 lg:flex lg:flex-col"
       >
         <div className="flex justify-center px-0">
-          <Logo href="/dashboard" className="h-10 w-10 justify-center gap-0 overflow-hidden text-transparent" />
+          <Logo
+            href="/dashboard"
+            className="h-10 w-10 shrink-0 justify-center gap-0 overflow-hidden text-transparent [&>span:first-child]:text-[var(--orange-button-text)] [&>span:last-child]:hidden"
+          />
         </div>
         <div className="mt-10 flex-1">
           <nav className="space-y-2">{navLinks()}</nav>
